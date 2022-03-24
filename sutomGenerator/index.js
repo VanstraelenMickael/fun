@@ -2,9 +2,22 @@ const { default: axios } = require("axios");
 const cheerio = require("cheerio");
 const { filter } = require("domutils");
 
-const FIRSTLETTER = "e";
-const NEXTLETTERS = {};
-const LENGTH = 6;
+const FIRSTLETTER = "V"; // Ex : "B"
+const NEXTLETTERS = {}; // Ex : { 2 : "B", 6: "U"}
+const WRONG_LETTERS = []; // Ex : ["A","E"]
+const KNOWN_WRONG_POSITION_LETTERS = {
+  E: ["9"],
+  A: ["9"],
+  I: ["9"],
+  // U: ["9"],
+  // O: ["9"],
+  // R: ["9"],
+  // S: ["9"],
+  // T: ["9"],
+  // V: ["9"],
+  // L: ["9"],
+}; // Ex : {"B" : ["2","3"], "E" : ["2","4"]}
+const LENGTH = 5; // Ex : 6
 
 const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
@@ -26,13 +39,17 @@ async function process() {
     }
     let axiosData = await axios.get(urlComp);
     let datas = axiosData.data;
-    let dots = i % 3 == 1 ? "." : i % 3 == 2 ? "." : "...";
+    let dots = i % 3 == 1 ? "." : i % 3 == 2 ? ".." : "...";
     console.log(`Progression${dots} - [${i} / ${total_pages}]`);
-    await delay(200);
+    // await delay(200);
     let scraped = await scrape(datas);
-    words = words.concat(filerByLength(LENGTH, scraped));
+    words = words.concat(filterByLength(LENGTH, scraped));
   }
 
+  words = filterByNonPresentLetters(WRONG_LETTERS, words);
+  words = filterByPresentLetters(KNOWN_WRONG_POSITION_LETTERS, words);
+  words = filterByPositionnedLetters(NEXTLETTERS, words);
+  words = filterByKnownWrongPosition(KNOWN_WRONG_POSITION_LETTERS, words);
   console.log(words);
 }
 
@@ -64,10 +81,67 @@ function clear(string) {
   return string;
 }
 
-function filerByLength(LENGTH, array) {
+function filterByLength(LENGTH, array) {
   let filtered = [];
   for (word of array) {
     if (word.length == LENGTH) filtered.push(word);
+  }
+  return filtered;
+}
+
+function filterByNonPresentLetters(npl, array) {
+  let filtered = [];
+  for (word of array) {
+    let isValid = true;
+    for (letter of npl) {
+      if (word.indexOf(letter) != -1) isValid = false;
+    }
+    if (isValid) filtered.push(word);
+  }
+  return filtered;
+}
+
+function filterByPresentLetters(upl, array) {
+  let filtered = [];
+  for (word of array) {
+    let isValid = 0;
+    let uplLenght = 0;
+    for (letter in upl) {
+      if (word.indexOf(letter) != -1) isValid++;
+      uplLenght++;
+    }
+    if (isValid == uplLenght) filtered.push(word);
+  }
+  return filtered;
+}
+
+function filterByPositionnedLetters(NEXTLETTERS, array) {
+  let filtered = [];
+  for (word of array) {
+    let nlLength = 0;
+    let isValid = 0;
+    for (pos in NEXTLETTERS) {
+      nlLength++;
+      // Get the letter at the pos
+      let letterInTheWordAtThePos = word.substring(pos - 1, pos);
+      if (NEXTLETTERS[pos] === letterInTheWordAtThePos) isValid++;
+    }
+    if (isValid == nlLength) filtered.push(word);
+  }
+  return filtered;
+}
+
+function filterByKnownWrongPosition(KNOWN_WRONG_POSITION_LETTERS, array) {
+  let filtered = [];
+  for (word of array) {
+    let isValid = true;
+    for (letter in KNOWN_WRONG_POSITION_LETTERS) {
+      for (position of KNOWN_WRONG_POSITION_LETTERS[letter]) {
+        let letterInPosition = word.substring(position - 1, position);
+        if (letterInPosition == letter) isValid = false;
+      }
+    }
+    if (isValid) filtered.push(word);
   }
   return filtered;
 }
