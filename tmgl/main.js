@@ -11,22 +11,22 @@ class Joueur {
   }
 }
 
-let affi = new Joueur("Affi", "sw", "BDS", 0, 0, 2, 1, 0);
-let aurel = new Joueur("Aurel", "fr", "GP", 1, 1, 1, 0, 0);
-let binkss = new Joueur("Binkss", "fr", "Izi", 0, 0, 2, 1, 0);
-let bren = new Joueur("Bren", "fr", "KC", 1, 1, 1, 0, 0);
-let carljr = new Joueur("CarlJr", "can", "SLY", 0, 3, 0, 0, 0);
+let affi = new Joueur("Affi", "sw", "BDS", 0, 0, 2, 2, 0);
+let aurel = new Joueur("Aurel", "fr", "GP", 1, 1, 2, 0, 0);
+let binkss = new Joueur("Binkss", "fr", "Izi", 0, 0, 3, 1, 0);
+let bren = new Joueur("Bren", "fr", "KC", 1, 1, 2, 0, 0);
+let carljr = new Joueur("CarlJr", "can", "SLY", 1, 3, 0, 0, 0);
 let granady = new Joueur("Granady", "ger", "AA", 0, 3, 0, 0, 0);
 let gwen = new Joueur("Gwen", "fr", "GW", 0, 0, 1, 2, 0);
-let kappa = new Joueur("Kappa", "prout", "SN", 1, 0, 0, 1, 1);
-let massa = new Joueur("Massa", "ger", "BIG", 1, 0, 0, 2, 0);
-let mime = new Joueur("Mime", "pol", "ORG", 1, 1, 1, 0, 0);
-let mudda = new Joueur("Mudda", "aus", "EDL", 1, 1, 1, 0, 0);
-let otaaaq = new Joueur("Otaaq", "fr", "LLE", 0, 0, 1, 1, 1);
-let pac = new Joueur("PAC", "eng", "NMN", 0, 0, 1, 0, 2);
-let papou = new Joueur("Papou", "fr", "GO", 0, 2, 0, 1, 0);
-let scrapie = new Joueur("Scrapie", "be", "SPT", 0, 0, 1, 2, 0);
-let spam = new Joueur("Spam", "ned", "ALL", 0, 0, 0, 1, 2);
+let kappa = new Joueur("Kappa", "prout", "SN", 1, 1, 0, 1, 1);
+let massa = new Joueur("Massa", "ger", "BIG", 1, 0, 0, 3, 0);
+let mime = new Joueur("Mime", "pol", "ORG", 1, 2, 1, 0, 0);
+let mudda = new Joueur("Mudda", "aus", "EDL", 1, 2, 1, 0, 0);
+let otaaaq = new Joueur("Otaaq", "fr", "LLE", 1, 0, 1, 1, 1);
+let pac = new Joueur("PAC", "eng", "NMN", 0, 1, 1, 0, 2);
+let papou = new Joueur("Papou", "fr", "GO", 0, 2, 1, 1, 0);
+let scrapie = new Joueur("Scrapie", "be", "SPT", 0, 0, 1, 3, 0);
+let spam = new Joueur("Spam", "ned", "ALL", 0, 0, 0, 2, 2);
 
 let joueurs = [
   massa,

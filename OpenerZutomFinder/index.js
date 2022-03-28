@@ -1,19 +1,25 @@
 const { default: axios } = require("axios");
 const cheerio = require("cheerio");
 
-const FIRSTLETTER = "M"; // Ex : "B"
+const FIRSTLETTER = "Z"; // Ex : "B"
 const WANTED_LETTERS = {
-  E: [],
-  A: [],
-  I: [],
-  U: [],
-  O: [],
-  // R: [],
-  // S: [],
-  // T: [],
-  // V: [],
+  // E: [],
+  // A: [],
+  // I: [],
+  // U: [],
+  // O: [],
+  R: [],
+  S: [],
+  T: [],
   // L: [],
+  // C: [],
+  // H: [],
+  // N: [],
+  M: [],
+  // P: [],
+  // D: [],
 };
+const WRONG_LETTERS = []; // Ex : ["A","E"]
 const SECONDARY_LETTERS = {
   // R: [],
   // S: [],
@@ -22,7 +28,7 @@ const SECONDARY_LETTERS = {
   // L: [],
 };
 // Ex : {"B" : [], "E" : []}
-const LENGTH = 7; // Ex : 6
+const LENGTH = 8; // Ex : 6
 
 const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
@@ -52,6 +58,7 @@ async function process() {
   }
 
   words = filterByWantedLetters(WANTED_LETTERS, words);
+  words = filterByNonPresentLetters(WRONG_LETTERS, words);
   console.log(words);
 }
 
@@ -102,6 +109,18 @@ function filterByWantedLetters(upl, array) {
       uplLenght++;
     }
     if (isValid == uplLenght) filtered.push(word);
+  }
+  return filtered;
+}
+
+function filterByNonPresentLetters(npl, array) {
+  let filtered = [];
+  for (word of array) {
+    let isValid = true;
+    for (letter of npl) {
+      if (word.indexOf(letter) != -1) isValid = false;
+    }
+    if (isValid) filtered.push(word);
   }
   return filtered;
 }
