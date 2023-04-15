@@ -2,11 +2,11 @@ const { default: axios } = require("axios");
 const cheerio = require("cheerio");
 const { filter } = require("domutils");
 
-const FIRSTLETTER = "A"; // Ex : "B"
-const NEXTLETTERS = { 5: "I", 7: "E" }; // Ex : { 2 : "B", 6: "U"}
-const WRONG_LETTERS = ["U", "D", "O", "S"]; // Ex : ["A","E"]
-const KNOWN_WRONG_POSITION_LETTERS = {}; // Ex : {"B" : ["2","3"], "E" : ["2","4"]}
-const LENGTH = 7; // Ex : 6
+const FIRSTLETTER = "C"; // Ex : "B"
+const NEXTLETTERS = {}; // Ex : { 2 : "B", 6: "U"}
+const WRONG_LETTERS = ["O", "U", "P", "E", "R", "L", "A"]; // Ex : ["A","E"]
+const KNOWN_WRONG_POSITION_LETTERS = { I: [3, 5], M: [3, 4], T: [6] }; // Ex : {"B" : ["2","3"], "E" : ["2","4"]}
+const LENGTH = 6; // Ex : 6
 
 const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
