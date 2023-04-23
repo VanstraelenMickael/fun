@@ -8,8 +8,10 @@ let f_champs = [];
 const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
 async function main() {
+  let index = 0;
   for (id in champs.data) {
-    console.log(id);
+    console.log(`[${index}/${Object.keys(champs.data).length}] - ${id}`);
+    index++;
     const url_1 = `https://leagueoflegends.fandom.com/wiki/${champs.data[id].name}`;
     const url_2 = `https://leagueoflegends.fandom.com/wiki/${champs.data[id].name}/LoL`;
     try {
@@ -29,10 +31,12 @@ async function main() {
         regions: scraped_one.regions, // https://leagueoflegends.fandom.com/wiki/champ_name -> Regions
         releaseYear: scraped_two.releaseYear, // https://leagueoflegends.fandom.com/wiki/Akali/LoL -> Release date
       });
+      // console.log(f_champs);
     } catch (e) {
       console.error("failed for", id);
     }
   }
+  console.log(f_champs);
   fs.writeFileSync(`dump/champs.json`, JSON.stringify(f_champs, null, 2));
 }
 
@@ -57,14 +61,23 @@ async function scrape_two(data) {
 function clear(content) {
   const $ = cheerio.load(content);
   const pronouns = $("div[data-source='pronoun'] > div").html();
-  const species = $("div[data-source='species'] > div a").html();
+  const species = $("div[data-source='species'] div").find("a");
+  let species_final = [];
+  for (let i = 0; i < species.length; i++) {
+    if (species[i].parent.name != "s") {
+      // console.log(species[i].children[0].data);
+      species_final.push(species[i].children[0].data);
+    }
+  }
+  // console.log(species_final);
+
   const regions = $(
     "div[data-source='region'] > div span[style='white-space:normal;'] > a"
   ).html();
 
   return {
     gender: getGender(pronouns),
-    species,
+    species: species_final,
     regions,
   };
 }
@@ -76,9 +89,9 @@ function clear_two(content) {
   const resource = $(
     "div[data-source='resource'] > div > span > a:nth-child(2)"
   ).html();
-  const range_type = $(
-    "div[data-source='rangetype'] > div > span > a:nth-child(2)"
-  ).html();
+  const range_type = [
+    $("div[data-source='rangetype'] > div > span > a:nth-child(2)").html(),
+  ];
 
   return {
     releaseYear: getYear(releaseYear),
@@ -90,8 +103,10 @@ function clear_two(content) {
 
 function getGender(txt) {
   const first = txt.split("/")[0];
-  if (first == "He") return "Male";
-  return "Female";
+  if (first == "He" || first == "It") return "Male";
+  if (first == "She") return "Female";
+  if (first == "They") return "Other";
+  return "Other";
 }
 
 function getYear(txt) {
