@@ -51,8 +51,9 @@ function hasChar(champ_char, wanted_char) {
     if (
       typeof champ_char == "object" &&
       champ_char.every((val, idx) => val === wanted_char[idx])
-    )
+    ) {
       result = false;
+    } else if (champ_char == wanted_char) result = false;
   });
   return result;
 }
