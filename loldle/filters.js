@@ -13,6 +13,8 @@ export function filterChar(champs, datas, char) {
     });
   }
 
+  console.log(toKeep);
+
   return champs
     .filter((c) => {
       if (theOne.length > 0) {
@@ -22,6 +24,7 @@ export function filterChar(champs, datas, char) {
           return c[char] == theOne;
         }
       } else {
+        console.log(c.name);
         return toKeep.length > 0 ? hasChar(c[char], toKeep) : true;
       }
     })
@@ -39,22 +42,35 @@ export function filterChar(champs, datas, char) {
         });
         return result;
       } else {
-        return true;
+        let result = undefined;
+        toRemove.forEach((tr) => {
+          result =
+            result == undefined || result == true
+              ? c[char] != tr
+                ? true
+                : false
+              : result;
+        });
+        return result;
       }
     });
 }
 
 function hasChar(champ_char, wanted_char) {
   let result = false;
+  console.log("c", champ_char);
+  console.log("wanted", wanted_char);
   wanted_char.forEach((wc) => {
     if (champ_char.indexOf(wc) != -1) result = true;
     if (
       typeof champ_char == "object" &&
-      champ_char.every((val, idx) => val === wanted_char[idx])
+      champ_char.every((val, idx) => val === wanted_char[idx]) &&
+      champ_char.length == wanted_char.length
     ) {
       result = false;
     } else if (champ_char == wanted_char) result = false;
   });
+  console.log("result", result);
   return result;
 }
 

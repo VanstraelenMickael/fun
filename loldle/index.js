@@ -12,13 +12,13 @@ let rangeTypes = getField("rangeType");
 let regions = getField("regions");
 let releaseYear = getField("releaseYear");
 
-genders.Male = "green";
-positions.Middle = "orange";
+genders.Male = "red";
+positions.Middle = "red";
 species.Human = "orange";
 species.Magicborn = "orange";
 resources.Flow = "red";
-rangeTypes.Melee = "red";
-regions.Ionia = "red";
+rangeTypes.Melee = "green";
+regions.Ionia = "orange";
 setReleaseDate(releaseYear, 2013, "down");
 
 // Filters
